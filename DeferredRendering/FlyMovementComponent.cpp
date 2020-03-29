@@ -5,5 +5,6 @@
 
 void FlyMovementComponent::Update(Entity* parent, float deltaTime)
 {
-	parent->GetComponent<TransformComponent>();
+	auto transform = parent->GetComponent<TransformComponent>();
+	
 }

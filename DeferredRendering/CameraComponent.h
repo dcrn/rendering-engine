@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class CameraComponent : Component
+class CameraComponent : public Component
 {
 public:
 	constexpr static const char* TYPE = "CameraComponent";

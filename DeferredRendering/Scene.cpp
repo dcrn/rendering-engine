@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 #include "CameraComponent.h"
+#include "Renderer.h"
+#include "TransformComponent.h"
 
 Scene::Scene()
 {
@@ -11,6 +13,7 @@ Scene::Scene()
 
 void Scene::AddEntity(std::shared_ptr<Entity> entity)
 {
+	entities.push_back(entity);
 }
 
 void Scene::Update()
@@ -21,19 +24,36 @@ void Scene::Update()
 	const float deltaTime = frameDeltaSeconds.count();
 
 	activeCameraEntity = nullptr;
-	for (std::shared_ptr<Entity> &entity : entities)
+	for (std::shared_ptr<Entity>& entity : entities)
 	{
 		entity->Update(deltaTime);
-		
+
 		if (const auto camera = entity->GetComponent<CameraComponent>())
 		{
-			if (camera->IsActive()) {
+			if (camera->IsActive())
+			{
 				activeCameraEntity = entity;
 			}
 		}
 	}
 }
 
-void Scene::Render()
+void Scene::Render(Renderer* renderer)
 {
+	if (activeCameraEntity) {
+		if (auto transform = activeCameraEntity->GetComponent<TransformComponent>())
+		{
+			renderer->SetView(transform->GetPosition(), transform->GetOrientation());
+		}
+
+		if (auto camera = activeCameraEntity->GetComponent<CameraComponent>())
+		{
+			renderer->SetProjection(camera->GetFov(), camera->GetNear(), camera->GetFar());
+		}
+	}
+
+	for (const std::shared_ptr<Entity> &entity : entities)
+	{
+		renderer->DrawEntity(entity);
+	}
 }

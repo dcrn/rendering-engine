@@ -1,9 +1,8 @@
 #include <iostream>
 
-#include <GLFW/glfw3.h>
-
 #include "Renderer.h"
 #include "Window.h"
+#include "DefaultScene.h"
 
 class App
 {
@@ -14,28 +13,30 @@ public:
 	void Init()
 	{
 		window.Open("OpenGL Rendering Demo", WINDOW_WIDTH, WINDOW_HEIGHT);
-		
+
 		renderer.Init();
 		renderer.Resize(window.GetWidth(), window.GetHeight());
+
+		scene = std::static_pointer_cast<Scene>(std::make_shared<DefaultScene>());
 	}
 	
 	void Run()
 	{
-		// Render once for now
-		renderer.Draw();
-		window.SwapBuffers();
-		
 		while (window.IsOpen())
 		{
 			window.PollEvents();
-			//renderer.Draw();
-			//window.SwapBuffers();
+			scene->Update();
+			renderer.BeginDraw();
+			scene->Render(&renderer);
+			renderer.EndDraw();
+			window.SwapBuffers();
 		}
 	}
 
 private:
 	Window window;
 	Renderer renderer;
+	std::shared_ptr<Scene> scene;
 };
 
 

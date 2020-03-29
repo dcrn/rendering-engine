@@ -2,7 +2,7 @@
 
 #include "Component.h"
 
-class FlyMovementComponent : Component
+class FlyMovementComponent : public Component
 {
 public:
 	constexpr static const char* TYPE = "FlyMovementComponent";

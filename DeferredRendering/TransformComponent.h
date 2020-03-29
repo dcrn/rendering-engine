@@ -5,24 +5,24 @@
 
 #include "Component.h"
 
-class TransformComponent : Component
+class TransformComponent : public Component
 {
 public:
-	constexpr static const char * TYPE = "TransformComponent";
+	constexpr static const char* TYPE = "TransformComponent";
 
 	TransformComponent();
 
 	glm::vec3 GetPosition() const;
 	void SetPosition(glm::vec3 position);
-	
-	glm::quat GetRotation() const;
+
+	glm::quat GetOrientation() const;
 	void SetRotation(glm::quat rotation);
-	
+
 	glm::vec3 GetScale() const;
 	void SetScale(glm::vec3 scale);
-	
+
 private:
-	glm::vec3 position{};
-	glm::quat rotation{};
-	glm::vec3 scale{};
+	glm::vec3 position;
+	glm::quat orientation;
+	glm::vec3 scale;
 };

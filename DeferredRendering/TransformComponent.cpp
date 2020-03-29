@@ -1,10 +1,10 @@
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent()
+TransformComponent::TransformComponent() :
+	position(0.0f),
+	orientation(1.0f, 0.0f, 0.0f, 0.0f),
+	scale(1.0f)
 {
-	position = glm::zero<glm::vec3>();
-	rotation = glm::zero<glm::quat>();
-	scale = glm::identity<glm::vec3>();
 }
 
 glm::vec3 TransformComponent::GetPosition() const
@@ -17,14 +17,14 @@ void TransformComponent::SetPosition(glm::vec3 position)
 	this->position = position;
 }
 
-glm::quat TransformComponent::GetRotation() const
+glm::quat TransformComponent::GetOrientation() const
 {
-	return rotation;
+	return orientation;
 }
 
 void TransformComponent::SetRotation(glm::quat rotation)
 {
-	this->rotation = rotation;
+	this->orientation = rotation;
 }
 
 glm::vec3 TransformComponent::GetScale() const

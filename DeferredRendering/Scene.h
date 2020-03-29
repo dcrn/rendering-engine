@@ -5,6 +5,7 @@
 #include <vector>
 
 class Entity;
+class Renderer;
 
 class Scene
 {
@@ -13,7 +14,7 @@ public:
 	void AddEntity(std::shared_ptr<Entity> entity);
 	
 	void Update();
-	void Render();
+	void Render(Renderer* renderer);
 
 private:
 	std::chrono::high_resolution_clock::time_point lastFrameTime;
