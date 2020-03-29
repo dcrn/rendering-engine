@@ -147,16 +147,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="simple.frag" />
+    <None Include="simple.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

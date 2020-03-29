@@ -9,7 +9,7 @@
 
 using namespace gl;
 
-GLuint ShaderLoader::CompileProgram(const std::vector<GLuint>& shaderIds)
+GLuint ShaderLoader::LinkProgram(const std::vector<GLuint>& shaderIds)
 {
 	GLuint programId = glCreateProgram();
 
@@ -38,7 +38,7 @@ GLuint ShaderLoader::CompileProgram(const std::vector<GLuint>& shaderIds)
 	return programId;
 }
 
-GLuint ShaderLoader::LoadShader(const std::string& filename, GLenum shaderType)
+GLuint ShaderLoader::CompileShader(const std::string& filename, GLenum shaderType)
 {
 	const GLuint shaderId = glCreateShader(shaderType);
 	if (shaderId == 0)
@@ -74,13 +74,18 @@ GLuint ShaderLoader::LoadShader(const std::string& filename, GLenum shaderType)
 std::vector<int8_t> ShaderLoader::LoadFile(const std::string& filename)
 {
 	std::ifstream ifs(filename, std::ios::binary | std::ios::ate);
+	if (!ifs)
+	{
+		throw std::runtime_error("Cannot open file '" + filename + "', error: " + std::to_string(errno));
+	}
+	
 	size_t end = ifs.tellg();
 	ifs.seekg(0, std::ios::beg);
 	std::vector<int8_t> fileData(end - ifs.tellg());
 
-	if (fileData.size() == 0)
+	if (fileData.empty())
 	{
-		return fileData;
+		throw std::runtime_error("Shader file '" + filename + "' is empty");
 	}
 
 	if (!ifs.read(reinterpret_cast<char*>(fileData.data()), fileData.size()))
