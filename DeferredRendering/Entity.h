@@ -3,8 +3,7 @@
 #include <memory>
 #include <unordered_map>
 
-
-#include "Component.h"
+class Component;
 
 class Entity
 {
@@ -26,6 +25,9 @@ public:
 
 		return std::dynamic_pointer_cast<T>(it->second);
 	}
+
+	void Update(float deltaTime);
+	
 private:
 	std::unordered_map<const char *, std::shared_ptr<Component>> components;
 };
