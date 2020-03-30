@@ -1,6 +1,9 @@
 #include "DefaultScene.h"
 
+
+#include "CameraComponent.h"
 #include "Entity.h"
+#include "FlyMovementComponent.h"
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 
@@ -27,6 +30,31 @@ DefaultScene::DefaultScene()
 	AddEntity(CreateCubeEntity(glm::vec3(0.0f, 5.0f, 0.0f)));
 	AddEntity(CreateCubeEntity(glm::vec3(0.0f, -5.0f, 0.0f)));
 	AddEntity(CreateCubeEntity(glm::vec3(0.0f, 0.0f, 5.0f)));
+
+	AddEntity(CreateCameraEntity(
+		glm::vec3(20.0f),
+		glm::angleAxis(glm::pi<float>() * 2, glm::normalize(glm::vec3(-1.f)))
+	));
+}
+
+std::shared_ptr<Entity> DefaultScene::CreateCameraEntity(glm::vec3 initialPosition, glm::quat initialOrientation)
+{
+	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
+
+	auto camera = std::make_shared<CameraComponent>();
+	camera->SetActive(true);
+
+	auto transform = std::make_shared<TransformComponent>();
+	transform->SetPosition(initialPosition);
+	transform->SetOrientation(initialOrientation);
+
+	auto flyMovement = std::make_shared<FlyMovementComponent>();
+
+	entity->AddComponent(transform);
+	entity->AddComponent(camera);
+	entity->AddComponent(flyMovement);
+
+	return entity;
 }
 
 std::shared_ptr<Entity> DefaultScene::CreateCubeEntity(const glm::vec3 &initialPosition)

@@ -4,7 +4,7 @@
 
 CameraComponent::CameraComponent()
 {
-	fov = glm::radians(75.0f);
+	fov = 75.0f;
 	near = 0.1f;
 	far = 100.0f;
 	active = false;

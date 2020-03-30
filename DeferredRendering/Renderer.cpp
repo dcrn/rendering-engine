@@ -23,7 +23,6 @@ Renderer::Renderer() :
 	viewNear(0.1f),
 	viewFar(100.0f)
 {
-	viewMatrix = glm::lookAt(glm::vec3(10.0f), glm::vec3(0.0f), glm::vec3(0, 0, 1));
 }
 
 void Renderer::Init()
@@ -53,7 +52,8 @@ void Renderer::Resize(int width, int height)
 
 void Renderer::SetView(glm::vec3 position, glm::quat orientation)
 {
-	viewMatrix = glm::translate(glm::toMat4(orientation), position);
+	const glm::vec3 lookDir = glm::vec3(orientation.x, orientation.y, orientation.z);
+	viewMatrix = glm::lookAt(position, position + lookDir, orientation * glm::vec3(0, 0, 1));
 }
 
 void Renderer::SetProjection(float fovDegrees, float near, float far)
