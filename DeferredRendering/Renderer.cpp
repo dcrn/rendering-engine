@@ -87,7 +87,11 @@ void Renderer::DrawEntity(std::shared_ptr<Entity> entity)
 	glm::vec3 scale = transform ? transform->GetScale() : glm::vec3(1.0f);
 	glm::quat orientation = transform ? transform->GetOrientation() : glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 
-	glm::mat4 modelMatrix = glm::translate(glm::scale(glm::toMat4(orientation), scale), position);
+	glm::mat4 modelRotation = glm::toMat4(orientation);
+	glm::mat4 modelScale = glm::scale(glm::mat4(1.0f), scale);
+	glm::mat4 modelTranslation = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 modelMatrix = modelTranslation * modelRotation * modelScale;
+	
 	glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
 
 	if (auto mesh = entity->GetComponent<MeshComponent>())

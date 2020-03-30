@@ -22,10 +22,14 @@ public:
 
 DefaultScene::DefaultScene()
 {
-	AddEntity(CreateCubeEntity());
+	AddEntity(CreateCubeEntity(glm::vec3(5.0f, 0.0f, 0.0f)));
+	AddEntity(CreateCubeEntity(glm::vec3(-5.0f, 0.0f, 0.0f)));
+	AddEntity(CreateCubeEntity(glm::vec3(0.0f, 5.0f, 0.0f)));
+	AddEntity(CreateCubeEntity(glm::vec3(0.0f, -5.0f, 0.0f)));
+	AddEntity(CreateCubeEntity(glm::vec3(0.0f, 0.0f, 5.0f)));
 }
 
-std::shared_ptr<Entity> DefaultScene::CreateCubeEntity()
+std::shared_ptr<Entity> DefaultScene::CreateCubeEntity(const glm::vec3 &initialPosition)
 {
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
@@ -33,6 +37,7 @@ std::shared_ptr<Entity> DefaultScene::CreateCubeEntity()
 	mesh->SetPrimitiveShape(PrimitiveShape::Cube);
 
 	auto transform = std::make_shared<TransformComponent>();
+	transform->SetPosition(initialPosition);
 
 	entity->AddComponent(transform);
 	entity->AddComponent(mesh);
