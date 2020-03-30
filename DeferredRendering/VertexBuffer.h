@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <glbinding/gl/types.h>
+#include <glm/vec3.hpp>
 #include <vector>
 
 class VertexBuffer
@@ -9,13 +10,18 @@ public:
 	VertexBuffer();
 	~VertexBuffer();
 
-	void Bind(gl::GLuint attributeId);
-	void Unbind(gl::GLuint attributeId);
-	void LoadTriangles(std::vector<gl::GLfloat> triangles);
+	void LoadVertices(std::vector<glm::vec3> vertices);
+	void LoadIndices(std::vector<uint16_t> indices);
 	bool IsValid() const;
-	size_t GetTriangleCount() const;
-	
+	gl::GLuint GetVertexBufferId() const;
+	gl::GLuint GetIndexBufferId() const;
+	gl::GLsizei GetVertexCount() const;
+	gl::GLsizei GetIndexCount() const;
+
 private:
-	gl::GLuint bufferId;
-	size_t triangleCount;
+	gl::GLuint vertexBufferId;
+	gl::GLuint indexBufferId;
+
+	std::vector<glm::vec3> vertices;
+	std::vector<uint16_t> indices;
 };

@@ -4,6 +4,22 @@
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 
+class SpinnerComponent : public Component
+{
+public:
+	constexpr static const char* TYPE = "SpinnerComponent";
+	void Update(Entity* parent, float deltaTime) override
+	{
+		if (auto transform = parent->GetComponent<TransformComponent>())
+		{
+			rotation += deltaTime;
+			transform->SetOrientation(glm::angleAxis(rotation, glm::vec3(0.0f, 0.0f, 1.0f)));
+		}
+	}
+
+	float rotation = 0.0f;
+};
+
 DefaultScene::DefaultScene()
 {
 	AddEntity(CreateCubeEntity());
@@ -20,6 +36,7 @@ std::shared_ptr<Entity> DefaultScene::CreateCubeEntity()
 
 	entity->AddComponent(transform);
 	entity->AddComponent(mesh);
+	entity->AddComponent(std::make_shared<SpinnerComponent>());
 
 	return entity;
 }

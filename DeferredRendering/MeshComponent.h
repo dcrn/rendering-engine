@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/vec3.hpp>
 #include <memory>
 #include <vector>
 
@@ -24,6 +25,7 @@ public:
 	void Update(Entity* parent, float deltaTime) override;
 	
 private:
-	std::vector<float> triangleVertices;
 	std::shared_ptr<VertexBuffer> vertexBuffer;
+	std::vector<glm::vec3> vertices;
+	std::vector<uint16_t> indices;
 };

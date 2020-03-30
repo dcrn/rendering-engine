@@ -1,9 +1,11 @@
 #version 330 core
 
-layout(location = 0) in vec3 pos;
+in vec3 VertexPosition;
+out vec3 modelPosition;
 
 uniform mat4 ModelViewProjection;
 
 void main(){
-    gl_Position = ModelViewProjection * vec4(pos, 1);
+    gl_Position = ModelViewProjection * vec4(VertexPosition, 1);
+    modelPosition = VertexPosition;
 }

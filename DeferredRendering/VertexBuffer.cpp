@@ -5,53 +5,61 @@
 
 using namespace gl;
 
-VertexBuffer::VertexBuffer()
+VertexBuffer::VertexBuffer() :
+	vertexBufferId(0),
+	indexBufferId(0)
 {
-	bufferId = 0;
 }
 
 VertexBuffer::~VertexBuffer()
 {
-	if (IsValid())
+	if (vertexBufferId != 0)
 	{
-		glDeleteBuffers(1, &bufferId);
+		glDeleteBuffers(1, &vertexBufferId);
+	}
+	if (indexBufferId != 0)
+	{
+		glDeleteBuffers(1, &indexBufferId);
 	}
 }
 
-void VertexBuffer::Bind(gl::GLuint attributeId)
+void VertexBuffer::LoadVertices(std::vector<glm::vec3> vertices)
 {
-	glEnableVertexAttribArray(attributeId);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-	glVertexAttribPointer(
-		attributeId,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		nullptr
-	);
+	this->vertices = vertices;
+	glGenBuffers(1, &vertexBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
 }
 
-void VertexBuffer::Unbind(gl::GLuint attributeId)
+void VertexBuffer::LoadIndices(std::vector<uint16_t> indices)
 {
-	glDisableVertexAttribArray(attributeId);
-}
-
-void VertexBuffer::LoadTriangles(std::vector<float> triangles)
-{
-	glGenBuffers(1, &bufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-	glBufferData(GL_ARRAY_BUFFER, triangles.size(), triangles.data(), GL_STATIC_DRAW);
-
-	triangleCount = triangles.size() / 3 / 3;
+	this->indices = indices;
+	glGenBuffers(1, &indexBufferId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint16_t), indices.data(), GL_STATIC_DRAW);
 }
 
 bool VertexBuffer::IsValid() const
 {
-	return bufferId != 0;
+	return vertexBufferId != 0 && indexBufferId != 0;
 }
 
-size_t VertexBuffer::GetTriangleCount() const
+GLuint VertexBuffer::GetVertexBufferId() const
 {
-	return triangleCount;
+	return vertexBufferId;
+}
+
+GLuint VertexBuffer::GetIndexBufferId() const
+{
+	return indexBufferId;
+}
+
+gl::GLsizei VertexBuffer::GetVertexCount() const
+{
+	return vertices.size();
+}
+
+gl::GLsizei VertexBuffer::GetIndexCount() const
+{
+	return indices.size();
 }

@@ -4,6 +4,8 @@
 #include <glm/ext/quaternion_float.hpp>
 #include <glm/mat4x4.hpp>
 
+#include "VertexBuffer.h"
+
 class Entity;
 
 class Renderer
@@ -16,6 +18,7 @@ public:
 	void SetProjection(float fovDegrees, float near, float far);
 	void BeginDraw();
 	void DrawEntity(std::shared_ptr<Entity> entity);
+	void DrawVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
 	void EndDraw();
 
 private:
@@ -23,7 +26,8 @@ private:
 	int extentHeight = 0;
 
 	gl::GLuint programId = 0;
-	gl::GLint mvpUniformId = 0;
+	gl::GLint uniformIdMVP = 0;
+	gl::GLint attribIdVertexPos = 0;
 
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;

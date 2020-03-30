@@ -3,15 +3,10 @@
 #include <GLFW/glfw3.h>
 #include <glbinding/gl41/gl.h>
 #include <glbinding/glbinding.h>
-#include <glm/common.hpp>
-#include <glm/common.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/component_wise.hpp>
-#include <glm/gtx/component_wise.hpp>
-
 
 #include "Entity.h"
 #include "MeshComponent.h"
@@ -28,7 +23,7 @@ Renderer::Renderer() :
 	viewNear(0.1f),
 	viewFar(100.0f)
 {
-	viewMatrix = glm::lookAt(glm::vec3(5.0f), glm::vec3(0.0f), glm::vec3(0, 0, 1));
+	viewMatrix = glm::lookAt(glm::vec3(10.0f), glm::vec3(0.0f), glm::vec3(0, 0, 1));
 }
 
 void Renderer::Init()
@@ -40,7 +35,8 @@ void Renderer::Init()
 		ShaderLoader::CompileShader("simple.frag", GL_FRAGMENT_SHADER)
 	};
 	programId = ShaderLoader::LinkProgram(shaders);
-	mvpUniformId = glGetUniformLocation(programId, "ModelViewProjection");
+	uniformIdMVP = glGetUniformLocation(programId, "ModelViewProjection");
+	attribIdVertexPos = glGetAttribLocation(programId, "VertexPosition");
 }
 
 void Renderer::Resize(int width, int height)
@@ -99,14 +95,33 @@ void Renderer::DrawEntity(std::shared_ptr<Entity> entity)
 		auto vertexBuffer = mesh->GetVertexBuffer();
 		if (vertexBuffer)
 		{
-			vertexBuffer->Bind(0);
-
-			glUniformMatrix4fv(mvpUniformId, 1, GL_FALSE, &mvp[0][0]);
-
-			glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(vertexBuffer->GetTriangleCount()));
-			vertexBuffer->Unbind(0);
+			glUniformMatrix4fv(uniformIdMVP, 1, GL_FALSE, &mvp[0][0]);
+			DrawVertexBuffer(vertexBuffer);
 		}
 	}
+}
+
+void Renderer::DrawVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+{
+	glEnableVertexAttribArray(attribIdVertexPos);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->GetVertexBufferId());
+	glVertexAttribPointer(
+		attribIdVertexPos,
+		sizeof(glm::vec3) / sizeof(float),
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		nullptr);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffer->GetIndexBufferId());
+
+	glDrawElements(
+		GL_TRIANGLES, 
+		vertexBuffer->GetIndexCount(), 
+		GL_UNSIGNED_SHORT, 
+		nullptr);
+
+	glDisableVertexAttribArray(attribIdVertexPos);
 }
 
 void Renderer::EndDraw()

@@ -22,9 +22,9 @@ glm::quat TransformComponent::GetOrientation() const
 	return orientation;
 }
 
-void TransformComponent::SetRotation(glm::quat rotation)
+void TransformComponent::SetOrientation(glm::quat orientation)
 {
-	this->orientation = rotation;
+	this->orientation = orientation;
 }
 
 glm::vec3 TransformComponent::GetScale() const

@@ -16,7 +16,7 @@ public:
 	void SetPosition(glm::vec3 position);
 
 	glm::quat GetOrientation() const;
-	void SetRotation(glm::quat rotation);
+	void SetOrientation(glm::quat orientation);
 
 	glm::vec3 GetScale() const;
 	void SetScale(glm::vec3 scale);
