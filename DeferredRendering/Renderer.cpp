@@ -9,10 +9,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Entity.h"
+#include "Mesh.h"
 #include "MeshComponent.h"
 #include "ShaderLoader.h"
 #include "TransformComponent.h"
-#include "VertexBuffer.h"
 
 using namespace gl;
 
@@ -52,8 +52,9 @@ void Renderer::Resize(int width, int height)
 
 void Renderer::SetView(glm::vec3 position, glm::quat orientation)
 {
+	// Just use the directional component for now
 	const glm::vec3 lookDir = glm::vec3(orientation.x, orientation.y, orientation.z);
-	viewMatrix = glm::lookAt(position, position + lookDir, orientation * glm::vec3(0, 0, 1));
+	viewMatrix = glm::lookAt(position, position + lookDir, glm::vec3(0, 0, 1));
 }
 
 void Renderer::SetProjection(float fovDegrees, float near, float far)
@@ -94,37 +95,41 @@ void Renderer::DrawEntity(std::shared_ptr<Entity> entity)
 	
 	glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
 
-	if (auto mesh = entity->GetComponent<MeshComponent>())
+	if (auto meshComponent = entity->GetComponent<MeshComponent>())
 	{
-		auto vertexBuffer = mesh->GetVertexBuffer();
-		if (vertexBuffer)
+		if (auto mesh = meshComponent->GetMesh())
 		{
 			glUniformMatrix4fv(uniformIdMVP, 1, GL_FALSE, &mvp[0][0]);
-			DrawVertexBuffer(vertexBuffer);
+			DrawMesh(mesh);
 		}
 	}
 }
 
-void Renderer::DrawVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+void Renderer::DrawMesh(const std::shared_ptr<Mesh>& mesh)
 {
+	const Buffer& vertexBuffer = mesh->GetVertexBuffer();
+	const Buffer& indexBuffer = mesh->GetIndexBuffer();
+	
 	glEnableVertexAttribArray(attribIdVertexPos);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->GetVertexBufferId());
+	glBindBuffer(vertexBuffer.GetBufferType(), vertexBuffer.GetId());
 	glVertexAttribPointer(
 		attribIdVertexPos,
-		sizeof(glm::vec3) / sizeof(float),
-		GL_FLOAT,
+		vertexBuffer.GetValueCount(),
+		vertexBuffer.GetValueType(),
 		GL_FALSE,
 		0,
 		nullptr);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBuffer->GetIndexBufferId());
+	glBindBuffer(indexBuffer.GetBufferType(), indexBuffer.GetId());
 
 	glDrawElements(
 		GL_TRIANGLES, 
-		vertexBuffer->GetIndexCount(), 
-		GL_UNSIGNED_SHORT, 
+		indexBuffer.GetItemCount(), 
+		indexBuffer.GetValueType(), 
 		nullptr);
 
+	glBindBuffer(indexBuffer.GetBufferType(), 0);
+	glBindBuffer(vertexBuffer.GetBufferType(), 0);
 	glDisableVertexAttribArray(attribIdVertexPos);
 }
 

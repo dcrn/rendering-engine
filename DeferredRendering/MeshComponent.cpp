@@ -1,10 +1,10 @@
 #include "MeshComponent.h"
 
-#include "VertexBuffer.h"
+#include "Mesh.h"
 
 void MeshComponent::SetPrimitiveShape(PrimitiveShape shape)
 {
-	vertexBuffer = nullptr;
+	mesh = nullptr;
 	
 	if (shape == PrimitiveShape::Cube)
 	{
@@ -37,17 +37,17 @@ void MeshComponent::SetPrimitiveShape(PrimitiveShape shape)
 	}
 }
 
-std::shared_ptr<VertexBuffer> MeshComponent::GetVertexBuffer() const
+std::shared_ptr<Mesh> MeshComponent::GetMesh() const
 {
-	return vertexBuffer;
+	return mesh;
 }
 
 void MeshComponent::Update(Entity* parent, float deltaTime)
 {
-	if (!vertexBuffer || !vertexBuffer->IsValid())
+	if (!mesh)
 	{
-		vertexBuffer = std::make_shared<VertexBuffer>();
-		vertexBuffer->LoadVertices(vertices);
-		vertexBuffer->LoadIndices(indices);
+		mesh = std::make_shared<Mesh>();
+		mesh->SetVertices(vertices);
+		mesh->SetIndices(indices);
 	}
 }

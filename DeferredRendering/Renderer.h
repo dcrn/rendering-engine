@@ -4,8 +4,9 @@
 #include <glm/ext/quaternion_float.hpp>
 #include <glm/mat4x4.hpp>
 
-#include "VertexBuffer.h"
+#include "Buffer.h"
 
+class Mesh;
 class Entity;
 
 class Renderer
@@ -18,7 +19,8 @@ public:
 	void SetProjection(float fovDegrees, float near, float far);
 	void BeginDraw();
 	void DrawEntity(std::shared_ptr<Entity> entity);
-	void DrawVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
+	void DrawMesh(const std::shared_ptr<Mesh>& vertexBuffer);
+	void BindBuffer(const Buffer& buffer);
 	void EndDraw();
 
 private:

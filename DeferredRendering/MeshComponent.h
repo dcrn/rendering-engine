@@ -6,7 +6,7 @@
 
 #include "Component.h"
 
-class VertexBuffer;
+class Mesh;
 
 enum class PrimitiveShape
 {
@@ -20,12 +20,12 @@ public:
 
 	void SetPrimitiveShape(PrimitiveShape shape);
 
-	std::shared_ptr<VertexBuffer> GetVertexBuffer() const;
+	std::shared_ptr<Mesh> GetMesh() const;
 
 	void Update(Entity* parent, float deltaTime) override;
 	
 private:
-	std::shared_ptr<VertexBuffer> vertexBuffer;
+	std::shared_ptr<Mesh> mesh;
 	std::vector<glm::vec3> vertices;
 	std::vector<uint16_t> indices;
 };

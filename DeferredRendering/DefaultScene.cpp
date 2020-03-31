@@ -1,6 +1,5 @@
 #include "DefaultScene.h"
 
-
 #include "CameraComponent.h"
 #include "Entity.h"
 #include "FlyMovementComponent.h"
@@ -31,9 +30,14 @@ DefaultScene::DefaultScene()
 	AddEntity(CreateCubeEntity(glm::vec3(0.0f, -5.0f, 0.0f)));
 	AddEntity(CreateCubeEntity(glm::vec3(0.0f, 0.0f, 5.0f)));
 
+	glm::quat a = glm::angleAxis(glm::radians(180.0f), glm::normalize(glm::vec3(-1.0f)));
+	glm::quat b = glm::angleAxis(glm::radians(180.0f), glm::normalize(glm::vec3(-1.0f)));
+	glm::quat c = a * b;
+	
+
 	AddEntity(CreateCameraEntity(
 		glm::vec3(20.0f),
-		glm::angleAxis(glm::pi<float>() * 2, glm::normalize(glm::vec3(-1.f)))
+		glm::quat(1.0f,glm::normalize(glm::vec3(-1.0f)))
 	));
 }
 

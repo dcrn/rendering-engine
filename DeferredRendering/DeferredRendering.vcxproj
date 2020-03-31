@@ -152,12 +152,13 @@
     <ClCompile Include="DefaultScene.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FlyMovementComponent.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,17 +167,22 @@
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlyMovementComponent.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="TransformComponent.h" />
-    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="simple.frag" />
-    <None Include="simple.vert" />
+    <CopyFileToFolders Include="simple.frag">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="simple.vert">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
