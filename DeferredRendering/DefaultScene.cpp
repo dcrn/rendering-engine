@@ -1,10 +1,11 @@
 #include "DefaultScene.h"
 
-#include "CameraComponent.h"
 #include "Entity.h"
-#include "FlyMovementComponent.h"
 #include "MeshComponent.h"
+#include "CameraComponent.h"
 #include "TransformComponent.h"
+#include "FlyMovementComponent.h"
+#include "InputManager.h"
 
 class SpinnerComponent : public Component
 {
@@ -12,9 +13,18 @@ public:
 	constexpr static const char* TYPE = "SpinnerComponent";
 	void Update(Entity* parent, float deltaTime) override
 	{
+		if (auto input = parent->GetInputManager().lock())
+		{
+			if (input->GetKeyState(KeyCode::LeftArrow) == KeyState::Pressed) {
+				rotation -= deltaTime;
+			}
+			if (input->GetKeyState(KeyCode::RightArrow) == KeyState::Pressed) {
+				rotation += deltaTime;
+			}
+		}
+		
 		if (auto transform = parent->GetComponent<TransformComponent>())
 		{
-			rotation += deltaTime;
 			transform->SetOrientation(glm::angleAxis(rotation, glm::vec3(0.0f, 0.0f, 1.0f)));
 		}
 	}
@@ -36,7 +46,7 @@ DefaultScene::DefaultScene()
 	
 
 	AddEntity(CreateCameraEntity(
-		glm::vec3(20.0f),
+		glm::vec3(10.0f),
 		glm::quat(1.0f,glm::normalize(glm::vec3(-1.0f)))
 	));
 }

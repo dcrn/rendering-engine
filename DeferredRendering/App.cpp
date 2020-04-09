@@ -6,8 +6,8 @@
 
 class App
 {
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+	const int WINDOW_WIDTH = 1200;
+	const int WINDOW_HEIGHT = 900;
 	
 public:
 	void Init()
@@ -18,6 +18,7 @@ public:
 		renderer.Resize(window.GetWidth(), window.GetHeight());
 
 		scene = std::static_pointer_cast<Scene>(std::make_shared<DefaultScene>());
+		scene->SetInputManager(window.GetInputManager());
 	}
 	
 	void Run()

@@ -8,3 +8,13 @@ void Entity::Update(float deltaTime)
 		component.second->Update(this, deltaTime);
 	}
 }
+
+void Entity::SetInputManager(std::weak_ptr<InputManager> inputManager)
+{
+	this->inputManager = inputManager;
+}
+
+std::weak_ptr<InputManager> Entity::GetInputManager() const
+{
+	return inputManager;
+}

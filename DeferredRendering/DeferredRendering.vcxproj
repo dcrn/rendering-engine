@@ -167,6 +167,7 @@
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlyMovementComponent.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Renderer.h" />

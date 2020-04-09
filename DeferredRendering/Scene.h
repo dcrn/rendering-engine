@@ -6,11 +6,14 @@
 
 class Entity;
 class Renderer;
+class InputManager;
 
 class Scene
 {
 public:
 	Scene();
+
+	void SetInputManager(std::weak_ptr<InputManager> inputManager);
 	void AddEntity(std::shared_ptr<Entity> entity);
 	
 	void Update();
@@ -19,6 +22,7 @@ public:
 private:
 	std::chrono::high_resolution_clock::time_point lastFrameTime;
 	std::vector<std::shared_ptr<Entity>> entities;
-	std::shared_ptr<Entity> activeCameraEntity;
+	std::weak_ptr<Entity> activeCameraEntity;
+	std::weak_ptr<InputManager> inputManager;
 };
 

@@ -20,7 +20,6 @@ public:
 	void BeginDraw();
 	void DrawEntity(std::shared_ptr<Entity> entity);
 	void DrawMesh(const std::shared_ptr<Mesh>& vertexBuffer);
-	void BindBuffer(const Buffer& buffer);
 	void EndDraw();
 
 private:

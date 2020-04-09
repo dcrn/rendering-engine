@@ -5,14 +5,23 @@
 #include "Renderer.h"
 #include "TransformComponent.h"
 
-Scene::Scene()
-{
+Scene::Scene() {
 	lastFrameTime = std::chrono::high_resolution_clock::now();
 }
 
 
+void Scene::SetInputManager(std::weak_ptr<InputManager> inputManager)
+{
+	this->inputManager = inputManager;
+	for (std::shared_ptr<Entity>& entity : entities)
+	{
+		entity->SetInputManager(inputManager);
+	}
+}
+
 void Scene::AddEntity(std::shared_ptr<Entity> entity)
 {
+	entity->SetInputManager(inputManager);
 	entities.push_back(entity);
 }
 
@@ -23,7 +32,7 @@ void Scene::Update()
 	lastFrameTime = currentFrameTime;
 	const float deltaTime = frameDeltaSeconds.count();
 
-	activeCameraEntity = nullptr;
+	activeCameraEntity = std::weak_ptr<Entity>();
 	for (std::shared_ptr<Entity>& entity : entities)
 	{
 		entity->Update(deltaTime);
@@ -40,13 +49,13 @@ void Scene::Update()
 
 void Scene::Render(Renderer* renderer)
 {
-	if (activeCameraEntity) {
-		if (auto transform = activeCameraEntity->GetComponent<TransformComponent>())
+	if (auto cameraEntity = activeCameraEntity.lock()) {
+		if (auto transform = cameraEntity->GetComponent<TransformComponent>())
 		{
 			renderer->SetView(transform->GetPosition(), transform->GetOrientation());
 		}
 
-		if (auto camera = activeCameraEntity->GetComponent<CameraComponent>())
+		if (auto camera = cameraEntity->GetComponent<CameraComponent>())
 		{
 			renderer->SetProjection(camera->GetFov(), camera->GetNear(), camera->GetFar());
 		}

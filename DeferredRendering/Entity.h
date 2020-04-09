@@ -3,6 +3,7 @@
 #include <memory>
 #include <unordered_map>
 
+class InputManager;
 class Component;
 
 class Entity
@@ -27,8 +28,11 @@ public:
 	}
 
 	void Update(float deltaTime);
+	void SetInputManager(std::weak_ptr<InputManager> inputManager);
+	std::weak_ptr<InputManager> GetInputManager() const;
 	
 private:
 	std::unordered_map<const char *, std::shared_ptr<Component>> components;
+	std::weak_ptr<InputManager> inputManager;
 };
 

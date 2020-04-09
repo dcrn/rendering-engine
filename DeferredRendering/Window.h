@@ -5,9 +5,13 @@
 
 struct GLFWwindow;
 
+class InputManager;
+
 class Window
 {
 public:
+	Window();
+	
 	void Open(std::string title, int width, int height);
 	void Close();
 	bool IsOpen();
@@ -17,6 +21,9 @@ public:
 	int GetWidth();
 	int GetHeight();
 
+	std::shared_ptr<InputManager> GetInputManager();
+
 private:
-	std::shared_ptr<GLFWwindow> window;
+	std::shared_ptr<GLFWwindow> handle;
+	std::shared_ptr<InputManager> inputManager;
 };
