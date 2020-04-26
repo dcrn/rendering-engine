@@ -23,10 +23,6 @@ Renderer::Renderer() :
 	viewNear(0.1f),
 	viewFar(100.0f)
 {
-}
-
-void Renderer::Init()
-{
 	glbinding::initialize(glfwGetProcAddress, false);
 
 	const std::vector<GLuint> shaders = {
@@ -52,7 +48,7 @@ void Renderer::Resize(int width, int height)
 
 void Renderer::SetView(glm::vec3 position, glm::quat orientation)
 {
-	// Just use the directional component for now
+	// TODO: Use quat for camera roll instead of just direction
 	const glm::vec3 lookDir = glm::vec3(orientation.x, orientation.y, orientation.z);
 	viewMatrix = glm::lookAt(position, position + lookDir, glm::vec3(0, 0, 1));
 }

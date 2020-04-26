@@ -150,6 +150,7 @@
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DefaultScene.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FlyMovementComponent.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DefaultScene.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FlyMovementComponent.h" />
     <ClInclude Include="InputManager.h" />

@@ -4,8 +4,6 @@
 #include <glm/ext/quaternion_float.hpp>
 #include <glm/mat4x4.hpp>
 
-#include "Buffer.h"
-
 class Mesh;
 class Entity;
 
@@ -13,7 +11,7 @@ class Renderer
 {
 public:
 	Renderer();
-	void Init();
+
 	void Resize(int width, int height);
 	void SetView(glm::vec3 position, glm::quat orientation);
 	void SetProjection(float fovDegrees, float near, float far);

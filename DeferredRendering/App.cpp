@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "DefaultScene.h"
+#include "Engine.h"
 
 class App
 {
@@ -14,11 +15,14 @@ public:
 	{
 		window.Open("OpenGL Rendering Demo", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		renderer.Init();
-		renderer.Resize(window.GetWidth(), window.GetHeight());
+		std::shared_ptr<Renderer> renderer = std::make_shared<Renderer>();
+		renderer->Resize(window.GetWidth(), window.GetHeight());
 
-		scene = std::static_pointer_cast<Scene>(std::make_shared<DefaultScene>());
-		scene->SetInputManager(window.GetInputManager());
+		std::shared_ptr<Scene> scene = std::make_shared<DefaultScene>();
+
+		Engine::Instance.SetInputManager(window.GetInputManager());
+		Engine::Instance.SetRenderer(renderer);
+		Engine::Instance.SetScene(scene);
 	}
 	
 	void Run()
@@ -26,18 +30,13 @@ public:
 		while (window.IsOpen())
 		{
 			window.PollEvents();
-			scene->Update();
-			renderer.BeginDraw();
-			scene->Render(&renderer);
-			renderer.EndDraw();
+			Engine::Instance.Update();
 			window.SwapBuffers();
 		}
 	}
 
 private:
 	Window window;
-	Renderer renderer;
-	std::shared_ptr<Scene> scene;
 };
 
 
